@@ -45,7 +45,7 @@
  * Or,
 ~/antlr/code/grammars-v4/java8 $ java Test .
 /Users/parrt/antlr/code/grammars-v4/java8/./Parserjava
-/Users/parrt/antlr/code/grammars-v4/java8/./Parser.Java8Lexer/parrt/antlr/code/grammars-v4/java8/./Parser
+/Users/parrt/antlr/code/grammars-v4/java8/./ASTParser.Java8Lexer/parrt/antlr/code/grammars-v4/java8/./ASTParser
 /Users/parrt/antlr/code/grammars-v4/java8/./ParserUsers/parrt/antlr/code/grammars-v4/java8/./Test.java
 Total lexer+parser time 30844ms.
  */
