@@ -44,9 +44,11 @@
  *
  * Or,
 ~/antlr/code/grammars-v4/java8 $ java Test .
-/Users/parrt/antlr/code/grammars-v4/java8/./Parserjava
-/Users/parrt/antlr/code/grammars-v4/java8/./ASTParser.Java8Lexer/parrt/antlr/code/grammars-v4/java8/./ASTParser
-/Users/parrt/antlr/code/grammars-v4/java8/./ParserUsers/parrt/antlr/code/grammars-v4/java8/./Test.java
+/Users/parrt/antlr/code/grammars-v4/java8/./Java8BaseListener.java
+/Users/parrt/antlr/code/grammars-v4/java8/./Java8Lexer.java
+/Users/parrt/antlr/code/grammars-v4/java8/./Java8Listener.java
+/Users/parrt/antlr/code/grammars-v4/java8/./Java8Parser.java
+/Users/parrt/antlr/code/grammars-v4/java8/./Test.java
 Total lexer+parser time 30844ms.
  */
 grammar Java8;
@@ -68,7 +70,7 @@ literal
  * Productions from §4 (Types, Values, and Variables)
  */
 
-t_type
+type
 	:	primitiveType
 	|	referenceType
 	;
@@ -1623,26 +1625,20 @@ fragment
 SingleCharacter
 	:	~['\\]
 	;
-
 // §3.10.5 String Literals
-
 StringLiteral
 	:	'"' StringCharacters? '"'
 	;
-
 fragment
 StringCharacters
 	:	StringCharacter+
 	;
-
 fragment
 StringCharacter
 	:	~["\\]
 	|	EscapeSequence
 	;
-
 // §3.10.6 Escape Sequences for Character and String Literals
-
 fragment
 EscapeSequence
 	:	'\\' [btnfr"'\\]
@@ -1726,7 +1722,6 @@ LSHIFT_ASSIGN : '<<=';
 RSHIFT_ASSIGN : '>>=';
 URSHIFT_ASSIGN : '>>>=';
 
-
 // §3.8 Identifiers (must appear after all keywords in the grammar)
 
 Identifier
@@ -1738,8 +1733,10 @@ JavaLetter
 	:	[a-zA-Z$_] // these are the "java letters" below 0x7F
 	|	// covers all characters above 0x7F which are not a surrogate
 		~[\u0000-\u007F\uD800-\uDBFF]
+		{Character.isJavaIdentifierStart(_input.LA(-1))}?
 	|	// covers UTF-16 surrogate pairs encodings for U+10000 to U+10FFFF
 		[\uD800-\uDBFF] [\uDC00-\uDFFF]
+		{Character.isJavaIdentifierStart(Character.toCodePoint((char)_input.LA(-2), (char)_input.LA(-1)))}?
 	;
 
 fragment
@@ -1747,10 +1744,11 @@ JavaLetterOrDigit
 	:	[a-zA-Z0-9$_] // these are the "java letters or digits" below 0x7F
 	|	// covers all characters above 0x7F which are not a surrogate
 		~[\u0000-\u007F\uD800-\uDBFF]
+		{Character.isJavaIdentifierPart(_input.LA(-1))}?
 	|	// covers UTF-16 surrogate pairs encodings for U+10000 to U+10FFFF
 		[\uD800-\uDBFF] [\uDC00-\uDFFF]
+		{Character.isJavaIdentifierPart(Character.toCodePoint((char)_input.LA(-2), (char)_input.LA(-1)))}?
 	;
-
 
 //
 // Additional symbols not defined in the lexical specification

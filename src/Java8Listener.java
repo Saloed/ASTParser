@@ -1,4 +1,5 @@
-package Parser;// Generated from Java8.g4 by ANTLR 4.5
+// Generated from Java8.g4 by ANTLR 4.5
+import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -17,15 +18,15 @@ public interface Java8Listener extends ParseTreeListener {
 	 */
 	void exitLiteral(Java8Parser.LiteralContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link Java8Parser#t_type}.
+	 * Enter a parse tree produced by {@link Java8Parser#type}.
 	 * @param ctx the parse tree
 	 */
-	void enterT_type(Java8Parser.T_typeContext ctx);
+	void enterType(Java8Parser.TypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link Java8Parser#t_type}.
+	 * Exit a parse tree produced by {@link Java8Parser#type}.
 	 * @param ctx the parse tree
 	 */
-	void exitT_type(Java8Parser.T_typeContext ctx);
+	void exitType(Java8Parser.TypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link Java8Parser#primitiveType}.
 	 * @param ctx the parse tree

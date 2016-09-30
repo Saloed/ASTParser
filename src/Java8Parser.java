@@ -1,10 +1,12 @@
-package Parser;// Generated from Java8.g4 by ANTLR 4.5
+// Generated from Java8.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.*;
 import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class Java8Parser extends Parser {
@@ -32,7 +34,7 @@ public class Java8Parser extends Parser {
 		URSHIFT_ASSIGN=101, Identifier=102, AT=103, ELLIPSIS=104, WS=105, COMMENT=106, 
 		LINE_COMMENT=107;
 	public static final int
-		RULE_literal = 0, RULE_t_type = 1, RULE_primitiveType = 2, RULE_numericType = 3, 
+		RULE_literal = 0, RULE_type = 1, RULE_primitiveType = 2, RULE_numericType = 3, 
 		RULE_integralType = 4, RULE_floatingPointType = 5, RULE_referenceType = 6, 
 		RULE_classOrInterfaceType = 7, RULE_classType = 8, RULE_classType_lf_classOrInterfaceType = 9, 
 		RULE_classType_lfno_classOrInterfaceType = 10, RULE_interfaceType = 11, 
@@ -120,7 +122,7 @@ public class Java8Parser extends Parser {
 		RULE_postDecrementExpression = 234, RULE_postDecrementExpression_lf_postfixExpression = 235, 
 		RULE_castExpression = 236;
 	public static final String[] ruleNames = {
-		"literal", "t_type", "primitiveType", "numericType", "integralType", "floatingPointType", 
+		"literal", "type", "primitiveType", "numericType", "integralType", "floatingPointType", 
 		"referenceType", "classOrInterfaceType", "classType", "classType_lf_classOrInterfaceType", 
 		"classType_lfno_classOrInterfaceType", "interfaceType", "interfaceType_lf_classOrInterfaceType", 
 		"interfaceType_lfno_classOrInterfaceType", "typeVariable", "arrayType", 
@@ -318,30 +320,30 @@ public class Java8Parser extends Parser {
 		return _localctx;
 	}
 
-	public static class T_typeContext extends ParserRuleContext {
+	public static class TypeContext extends ParserRuleContext {
 		public PrimitiveTypeContext primitiveType() {
 			return getRuleContext(PrimitiveTypeContext.class,0);
 		}
 		public ReferenceTypeContext referenceType() {
 			return getRuleContext(ReferenceTypeContext.class,0);
 		}
-		public T_typeContext(ParserRuleContext parent, int invokingState) {
+		public TypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_t_type; }
+		@Override public int getRuleIndex() { return RULE_type; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof Java8Listener ) ((Java8Listener)listener).enterT_type(this);
+			if ( listener instanceof Java8Listener ) ((Java8Listener)listener).enterType(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof Java8Listener ) ((Java8Listener)listener).exitT_type(this);
+			if ( listener instanceof Java8Listener ) ((Java8Listener)listener).exitType(this);
 		}
 	}
 
-	public final T_typeContext t_type() throws RecognitionException {
-		T_typeContext _localctx = new T_typeContext(_ctx, getState());
-		enterRule(_localctx, 2, RULE_t_type);
+	public final TypeContext type() throws RecognitionException {
+		TypeContext _localctx = new TypeContext(_ctx, getState());
+		enterRule(_localctx, 2, RULE_type);
 		try {
 			setState(478);
 			switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {

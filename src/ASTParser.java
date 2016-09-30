@@ -1,12 +1,14 @@
-import Parser.Java8Lexer;
-import Parser.Java8Parser;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.atn.ParserATNSimulator;
+import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.atn.PredictionMode;
+import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.Interval;
+import org.antlr.v4.runtime.tree.*;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.RuleNode;
-import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,13 +27,21 @@ public class ASTParser {
         return this;
     }
 
+
+
     public ASTNode parseFile(String filename) throws IOException {
 
         ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(filename));
         Java8Lexer lexer = new Java8Lexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
+
         Java8Parser parser = new Java8Parser(tokens);
+
+
         ParseTree tree = parser.compilationUnit();
+
+
+        System.out.println(tree.toStringTree(parser));
         TreeConverter converter = new TreeConverter();
         ASTNode root = converter.convert(tree, null);
 //        System.out.println(root);
@@ -46,23 +56,29 @@ public class ASTParser {
         public final ASTNode parent;
         public final List<ASTNode> children;
         public final boolean isTerminal;
+        private final String text;
 
-        public ASTNode(String nodeName, int nodeIndex, Interval sourceInterval, ASTNode parent, boolean isTerminal) {
+        public ASTNode(String nodeName, int nodeIndex, int startInterval, int endInterval,
+                       String text, ASTNode parent, boolean isTerminal) {
             this.nodeName = nodeName;
             this.nodeIndex = nodeIndex;
-            this.sourceStart = sourceInterval.a;
-            this.sourceEnd = sourceInterval.b;
+            this.sourceStart = startInterval;
+            this.sourceEnd = endInterval;
             this.parent = parent;
+            this.text = text;
             this.children = new LinkedList<>();
             this.isTerminal = isTerminal;
         }
 
         private String shiftedString(String shift) {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("\n");
-            stringBuilder.append(shift);
-            stringBuilder.append("┗ ");
-            stringBuilder.append(nodeName);
+            stringBuilder.append("\n")
+                    .append(shift).append("┗ ")
+                    .append(nodeName)
+                    .append(" [").append(sourceStart)
+                    .append(":").append(sourceEnd)
+                    .append("]").append(text);
+
             for (ASTNode child : children) {
                 if (child.isTerminal) {
                     stringBuilder.append(" ");
@@ -110,9 +126,11 @@ public class ASTParser {
                 System.err.println("Parent of terminal is null");
                 return null;
             }
-            int tokenIndex = node.getSymbol().getType();
+            Token token = node.getSymbol();
+            int tokenIndex = token.getType();
             String tokenName = Java8Parser.VOCABULARY.getSymbolicName(tokenIndex);
-            ASTNode child = new ASTNode(tokenName, tokenIndex, node.getSourceInterval(), parent, true);
+            ASTNode child = new ASTNode(tokenName, tokenIndex, token.getLine(), token.getLine(),
+                    token.getText(), parent, true);
             parent.children.add(child);
             return child;
         }
@@ -121,7 +139,10 @@ public class ASTParser {
         private ASTNode enterRuleNode(RuleNode r, ASTNode parent) {
             ParserRuleContext ctx = (ParserRuleContext) r.getRuleContext();
             String tokenName = Java8Parser.ruleNames[ctx.getRuleIndex()];
-            ASTNode node = new ASTNode(tokenName, ctx.getRuleIndex(), ctx.getSourceInterval(), parent, false);
+            Token startToken = ctx.getStart();
+            Token endToken = ctx.getStop();
+            ASTNode node = new ASTNode(tokenName, ctx.getRuleIndex(), startToken.getLine(), endToken.getLine(),
+                    ctx.getText(), parent, false);
             if (parent != null) {
                 parent.children.add(node);
             }

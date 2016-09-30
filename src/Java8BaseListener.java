@@ -1,6 +1,7 @@
-package Parser;// Generated from Java8.g4 by ANTLR 4.5
+// Generated from Java8.g4 by ANTLR 4.5
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -27,13 +28,13 @@ public class Java8BaseListener implements Java8Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterT_type(Java8Parser.T_typeContext ctx) { }
+	@Override public void enterType(Java8Parser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitT_type(Java8Parser.T_typeContext ctx) { }
+	@Override public void exitType(Java8Parser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
